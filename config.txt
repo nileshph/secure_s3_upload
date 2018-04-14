@@ -1,0 +1,7 @@
+password:securecloud@utd2018
+user:secure_cloud_project
+
+https://167827099676.signin.aws.amazon.com/console
+
+Access key id: AKIAIWGDTEDC62T2PTQA
+Secure access key: nceHgUrJHpNE4iN4k4/v1+JY7+8lmyQlJ4X44Y13

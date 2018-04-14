@@ -15,7 +15,7 @@ public class Upload_File {
 	{
 		String bucket_name = "secure-cloud-project";
 		String key_name = "test.txt";
-		String file_name = key_name;
+		String file_name = "test.txt";
 		
 		AWSCredentials credentials = new BasicAWSCredentials(
 				"AKIAIWGDTEDC62T2PTQA", 
