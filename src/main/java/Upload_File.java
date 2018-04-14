@@ -1,4 +1,3 @@
-package Secure_Cloud.Secure_File_Upload;
 
 import java.io.File;
 
