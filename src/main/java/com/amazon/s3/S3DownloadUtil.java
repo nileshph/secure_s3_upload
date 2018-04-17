@@ -15,7 +15,7 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 
 public class S3DownloadUtil extends S3 {
 
-	public File uploadFile(String fileName, String bucketName) throws FileNotFoundException, IOException
+	public File downloadFile(String fileName, String bucketName) throws FileNotFoundException, IOException
 	{
 		@SuppressWarnings("deprecation")
 		AmazonS3 s3Client = new AmazonS3Client(this.getCredentials());
