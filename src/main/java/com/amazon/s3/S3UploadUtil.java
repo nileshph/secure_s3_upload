@@ -1,35 +1,24 @@
+package com.amazon.s3;
 
 import java.io.File;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-public class Upload_File {
+public class S3UploadUtil extends S3 {
 
-	public static void main(String[] args)
+	public void uploadFile(File file, String bucketName)
 	{
-		String bucket_name = "secure-cloud-project";
-		String key_name = "test.txt";
-		String file_name = "test.txt";
-		
-		AWSCredentials credentials = new BasicAWSCredentials(
-				"AKIAIWGDTEDC62T2PTQA", 
-				"nceHgUrJHpNE4iN4k4/v1+JY7+8lmyQlJ4X44Y13"
-				);
-
 		@SuppressWarnings("deprecation")
-		AmazonS3 s3client = new AmazonS3Client(credentials);	
-		
+		AmazonS3 s3client = new AmazonS3Client(this.getCredentials());	
+
 		try {
 			System.out.println("Uploading a new object to S3 from a file\n");
-			File file = new File(file_name);
 			s3client.putObject(new PutObjectRequest(
-					bucket_name, key_name, file));
+					bucketName, file.getName(), file));
 
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which " +
