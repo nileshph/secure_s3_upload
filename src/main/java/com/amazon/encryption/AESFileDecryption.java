@@ -1,3 +1,5 @@
+package com.amazon.encryption;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
@@ -9,17 +11,21 @@ import javax.crypto.spec.SecretKeySpec;
 public class AESFileDecryption {
 
 	byte[] hashedPassword = null;
-	FileInputStream fileToDecrypt = null;
+	File file = null;
 
-	public AESFileDecryption(byte[] hashedPassword, FileInputStream fileToDecrypt) {
+	public AESFileDecryption(byte[] hashedPassword, File file) {
 		this.hashedPassword = hashedPassword;
-		this.fileToDecrypt = fileToDecrypt;
+		this.file = file;
 	}
 
-	public FileOutputStream decrypt() {
+	public File decrypt() {
 		FileOutputStream outFile = null;
+		File decrypted = null;
 		SecretKey secret = new SecretKeySpec(hashedPassword, "AES");
 		try {
+			FileInputStream fileToDecrypt = new FileInputStream(file);
+			decrypted = new File(file.getName()+".txt");
+			System.out.println(decrypted.getName());
 			FileInputStream ivFis = new FileInputStream("Files\\iv.enc");
 			byte[] iv = new byte[16];
 			ivFis.read(iv);
@@ -27,7 +33,7 @@ public class AESFileDecryption {
 			
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
-			outFile = new FileOutputStream("Files\\plaintext_decrypted.txt");
+			outFile = new FileOutputStream("Files\\"+decrypted);
 			byte[] in = new byte[64];
 			int read;
 			while ((read = fileToDecrypt.read(in)) != -1) {
@@ -47,6 +53,6 @@ public class AESFileDecryption {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return outFile;
+		return decrypted;
 	}
 }
