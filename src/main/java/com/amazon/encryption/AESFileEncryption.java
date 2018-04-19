@@ -15,6 +15,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.amazon.s3.S3UploadUtil;
+
 public class AESFileEncryption {
 
 	byte[] hashedPassword = null;
@@ -68,6 +70,8 @@ public class AESFileEncryption {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		S3UploadUtil s3Upload = new S3UploadUtil();
+		s3Upload.uploadFile(encrypted, "secure-cloud-project");
 		return encrypted;
 	}
 
