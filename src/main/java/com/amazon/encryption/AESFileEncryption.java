@@ -1,9 +1,12 @@
+package com.amazon.encryption;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.AlgorithmParameters;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -15,21 +18,26 @@ import javax.crypto.spec.SecretKeySpec;
 public class AESFileEncryption {
 
 	byte[] hashedPassword = null;
-	FileInputStream fileToEncrypt = null;
+	File file = null;
 
-	AESFileEncryption(byte[] hashedPassword, FileInputStream filetoencrypt) {
-		this.hashedPassword = hashedPassword;
-		this.fileToEncrypt = filetoencrypt;
+	AESFileEncryption(byte[] hash, File file) {
+		this.hashedPassword = hash;
+		this.file = file;
 	}
 
 	public AESFileEncryption() {
 	}
 
-	public FileOutputStream encrypt() {
+	public File encrypt() {
 		FileOutputStream outFile = null;
+		File encrypted = null;
+		// byte[] hash = hashedPassword.getBytes(StandardCharsets.UTF_8);
 		SecretKey secret = new SecretKeySpec(hashedPassword, "AES");
 		try {
-			outFile = new FileOutputStream("Files\\encryptedFile.aes");
+			FileInputStream fileToEncrypt = new FileInputStream(file);
+			encrypted = new File(file.getName()+".enc");
+			System.out.println(encrypted.getName());
+			outFile = new FileOutputStream("Files\\"+encrypted);
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, secret);
 			AlgorithmParameters params = cipher.getParameters();
@@ -60,23 +68,26 @@ public class AESFileEncryption {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return outFile;
+		return encrypted;
 	}
 
 	//Method to generate SHA512 hash from password
 	public static byte[] hashPassword(String password) {
 		//generate salt and store it somewhere along with hashed password, maybe in a file
-		byte[] salt = new byte[8];
-		SecureRandom secureRandom = new SecureRandom();
-		secureRandom.nextBytes(salt);
+		String salt = null;
+		// SecureRandom secureRandom = new SecureRandom();
+		// secureRandom.nextBytes(salt);
 		int iterations = 65536;
 		int keyLength = 256;
+		salt = "123123123";
+		System.out.println("Salt is: "+salt);
 		try {
 			SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-			PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, keyLength);
+			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterations, keyLength);
 			SecretKey key = skf.generateSecret(spec);
 			byte[] res = key.getEncoded();
-			return res;
+			System.out.println("byte[] hash is: "+key.getEncoded()+" String hash is: "+key.getEncoded().toString());
+			return key.getEncoded();
 
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
