@@ -22,7 +22,7 @@ public class AESFileEncryption {
 	byte[] hashedPassword = null;
 	File file = null;
 
-	AESFileEncryption(byte[] hash, File file) {
+	public AESFileEncryption(byte[] hash, File file) {
 		this.hashedPassword = hash;
 		this.file = file;
 	}
