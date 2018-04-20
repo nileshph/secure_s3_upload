@@ -37,9 +37,9 @@ public class AESFileEncryption {
 		SecretKey secret = new SecretKeySpec(hashedPassword, "AES");
 		try {
 			FileInputStream fileToEncrypt = new FileInputStream(file);
-			encrypted = new File(file.getName()+".enc");
+			encrypted = new File("Files\\"+file.getName()+".enc");
 			System.out.println(encrypted.getName());
-			outFile = new FileOutputStream("Files\\"+encrypted);
+			outFile = new FileOutputStream(encrypted);
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, secret);
 			AlgorithmParameters params = cipher.getParameters();
