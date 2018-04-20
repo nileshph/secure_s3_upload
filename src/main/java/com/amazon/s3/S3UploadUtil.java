@@ -16,6 +16,7 @@ public class S3UploadUtil extends S3 {
 		AmazonS3 s3client = new AmazonS3Client(this.getCredentials());	
 
 		try {
+			System.out.println("file" + file.getAbsolutePath() + " " + file.getName());
 			System.out.println("Uploading a new object to S3 from a file\n");
 			s3client.putObject(new PutObjectRequest(
 					bucketName, file.getName(), file));
