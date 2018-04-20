@@ -24,7 +24,7 @@ public class AESFileDecryption {
 		SecretKey secret = new SecretKeySpec(hashedPassword, "AES");
 		try {
 			FileInputStream fileToDecrypt = new FileInputStream(file);
-			decrypted = new File(file.getName()+".txt");
+			decrypted = new File("Files\\"+file.getName()+".txt");
 			System.out.println(decrypted.getName());
 			FileInputStream ivFis = new FileInputStream("Files\\iv.enc");
 			byte[] iv = new byte[16];
@@ -33,7 +33,7 @@ public class AESFileDecryption {
 			
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
-			outFile = new FileOutputStream("Files\\"+decrypted);
+			outFile = new FileOutputStream(decrypted);
 			byte[] in = new byte[64];
 			int read;
 			while ((read = fileToDecrypt.read(in)) != -1) {
